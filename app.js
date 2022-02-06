@@ -31,7 +31,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //DB connecting then creating schema and there model
-mongoose.connect('mongodb://localhost:27017/userDB', { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true });
+mongoose.connect('mongodb+srv://optimisticlucifer:<Super1223>@cluster0.1am4s.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true });
 
 const userSchema = new mongoose.Schema({
     email: String,
