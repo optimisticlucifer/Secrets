@@ -31,13 +31,13 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //DB connecting then creating schema and there model
-mongoose.connect('mongodb+srv://optimisticlucifer:<Super1223>@cluster0.1am4s.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true });
+mongoose.connect('mongodb+srv://optimisticlucifer:Super1223@cluster0.1am4s.mongodb.net/userDB', { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true });
 
 const userSchema = new mongoose.Schema({
     email: String,
     password: String,
     googleId: String,
-    // facebookId: String,
+    facebookId: String,
     secret: String
 });
 
