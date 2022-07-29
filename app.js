@@ -30,11 +30,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //DB connecting then creating schema and there model
-mongoose.connect('mongodb+srv://optimisticlucifer:Super1223@cluster0.1am4s.mongodb.net/userDB', { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true });
+mongoose.connect('mongodb://localhost:27017/userDB', { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true });
 
 const userSchema = new mongoose.Schema({
     email: String,
-    username: String,
     password: String,
     googleId: String,
     secret: String
@@ -71,7 +70,7 @@ passport.use(new GoogleStrategy({
 },
     function (accessToken, refreshToken, profile, cb) {
         // console.log(profile);
-        User.findOrCreate({ googleId: profile.id ,username: profile.displayName}, function (err, user) {
+        User.findOrCreate({ googleId: profile.id }, function (err, user) {
             return cb(err, user);
         });
     }
@@ -95,7 +94,6 @@ app.get("/auth/google/secrets",
         res.redirect('/secrets');
     });
 
-
 app.get("/login", (req, res) => {
     res.render("login");
 });
@@ -106,18 +104,18 @@ app.get("/register", (req, res) => {
 
 app.get("/secrets", (req, res) => {
     //step 3 a(2) login route process
-    User.find({ "secret": { $ne: null } }, (err, foundUsers) => {
-        if (err) {
+    User.find({"secret":{$ne:null}},(err,foundUsers)=>{
+        if(err){
             console.log(err);
-        } else {
-            if (foundUsers) {
-                res.render("secrets", { userWithSecrets: foundUsers });
+        }else{
+            if(foundUsers){
+                res.render("secrets",{userWithSecrets: foundUsers});
             }
         }
     });
 });
 
-app.get("/submit", function (req, res) {
+app.get("/submit",function(req,res){
     if (req.isAuthenticated()) {
         // console.log(req);
         res.render("submit");
@@ -132,17 +130,17 @@ app.get("/logout", (req, res) => {
 });
 
 
-app.post("/submit", (req, res) => {
+app.post("/submit",(req,res)=>{
     const submittedSecret = req.body.secret;
     // console.log(req.user);//passport blende this info in req 
 
-    User.findById(req.user.id, (err, foundUser) => {
-        if (err) {
+    User.findById(req.user.id,(err,foundUser)=>{
+        if(err){
             console.log(err);
-        } else {
-            if (foundUser) {
-                foundUser.secret = submittedSecret;
-                foundUser.save(() => {
+        }else{
+            if(foundUser){
+                foundUser.secret=submittedSecret;
+                foundUser.save(()=>{
                     res.redirect("/secrets");
                 });
             }
@@ -183,8 +181,8 @@ app.post("/login", (req, res) => {
 
 });
 
-const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, function () {
+
+app.listen(3000, function () {
     console.log("Server started on port 3000");
 });
